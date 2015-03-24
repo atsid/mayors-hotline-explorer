@@ -7,6 +7,6 @@ body {
     margin: 40px;
 }
 
-#source-chart, #day-chart {
+#source-chart, #day-chart, #hour-chart {
     border: 1px solid black;
 }
