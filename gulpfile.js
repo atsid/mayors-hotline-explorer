@@ -19,7 +19,7 @@ gulp.task('bower', function() {
  * Use wiredep to weave in bower dependencies 
  */
 gulp.task('wiredep', ['bower'], function() {
-  gulp.src(['./index.html', './mayors_hotline.js'])
+  gulp.src('./src/**/*')
     .pipe(wiredep({'ignorePath':'dist/'}))
     .pipe(gulp.dest('./dist'));
 });
