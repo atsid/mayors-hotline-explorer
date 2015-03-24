@@ -1,12 +1,12 @@
 .dc-chart g.row text {
     fill: black;
-    /*font-size: 10px;*/
+    font-size: 10px;
 }
 
 body {
     margin: 40px;
 }
 
-#source-chart, #day-chart, #hour-chart {
+#source-chart, #date-chart, #hour-chart, #day-chart, #status-chart, #neighborhood-chart {
     border: 1px solid black;
 }

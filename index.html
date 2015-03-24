@@ -16,24 +16,43 @@
 
   <div class="col-md-8">
     <div class="row">
-      <div class="col-md-12" id="day-chart">
+      <div class="col-md-12" id="date-chart">
         <h5>Hotline Issue Volume Per Day
-            <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         </h5>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6" id="hour-chart">
+      <div class="col-md-5" id="hour-chart">
         <h5>Hotline Issue Volume Per Hour
             <a class="reset" href="javascript:hourChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         </h5>
       </div>
+      <div class="col-md-3" id="day-chart">
+        <h5>Day of Week
+          <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+      </div>
+      <div class="col-md-4" id="status-chart">
+        <h5>Status
+          <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+      </div>
     </div>
   </div>
-  <div class="col-md-4" id="source-chart">
-    <h5>Hotline Issues by Source
-      <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-    </h5>
+  <div class="col-md-4">
+    <div class="row">
+      <div class="col-md-12" id="source-chart">
+        <h5>Hotline Issues by Source
+          <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+        </h5>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12" id="neighborhood-chart">
+        <h5>Hotline Issues by Neighborhood
+          <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+        </h5>
+      </div>
+    </div>
   </div>
 
   <!-- bower:js -->
