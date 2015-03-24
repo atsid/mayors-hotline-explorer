@@ -1,0 +1,21 @@
+{
+  "name": "hubhacks2",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Ken-2scientists/hubhacks2",
+  "authors": [
+    "Ken Smith <ken.smith@2scientists.net>"
+  ],
+  "main": "index.html",
+  "license": "Apache2.0",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.3.4"
+  }
+}

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Ken-2scientists/hubhacks2",
   "devDependencies": {
     "gulp": "~3.8.11",
-    "gulp-gh-pages": "~0.5.0"
+    "gulp-gh-pages": "~0.5.0",
+    "wiredep": "~2.2.2"
   }
 }
