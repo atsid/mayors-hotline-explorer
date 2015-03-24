@@ -1,24 +1,24 @@
 var gulp = require('gulp');
-var deploy = require('gulp-gh-pages');
+var ghPages = require('gulp-gh-pages');
 var wiredep = require('wiredep').stream;
+var bower = require('gulp-bower');
 
 /**
  * Push build to gh-pages
  */
-gulp.task('deploy', ['copy', 'bower'], function() {
+gulp.task('deploy', ['wiredep'], function() {
   return gulp.src("./dist/**/*")
-    .pipe(deploy())
+    .pipe(ghPages())
 });
 
-gulp.task('copy', function() {
-  gulp.src('./bower_components')
-    .pipe(gulp.dest('./dist'));
+gulp.task('bower', function() {
+  bower();
 });
 
 /**
  * Use wiredep to weave in bower dependencies 
  */
-gulp.task('bower', function() {
+gulp.task('wiredep', ['bower'], function() {
   gulp.src('./index.html')
     .pipe(wiredep())
     .pipe(gulp.dest('./dist'));
