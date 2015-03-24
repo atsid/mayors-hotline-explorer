@@ -73,12 +73,13 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
 
   sourceChart
     .width($('#source-chart').innerWidth()-30)
-    .height(185)
+    .height(165)
     .margins({top: 10, left:20, right: 10, bottom:20})
     .colors(singleColor)
     .group(sources.group())
     .dimension(sources)
     .elasticX(true)
+    .gap(1)
     .ordering(function(i){return -i.value;});
 
   neighborhoodChart
@@ -89,6 +90,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
     .group(neighborhoods.group())
     .dimension(neighborhoods)
     .elasticX(true)
+    .gap(1)
     .ordering(function(i){return -i.value;});
 
   dc.renderAll();
