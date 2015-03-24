@@ -1,4 +1,5 @@
 var dayChart = dc.barChart("#day-chart");
+var hourChart = dc.barChart("#hour-chart");
 var sourceChart = dc.rowChart("#source-chart");
 var singleColor = ["#969CEB"];
 
@@ -15,6 +16,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
 
   var sources = index.dimension( function(d) { return d.source; });
   var open_dates = index.dimension( function(d) { return d3.time.day(d.date_opened) } );
+  var open_hours = index.dimension( function(d) { return d.date_opened.getHours()+1 } );
 
   dayChart
     .width($('#day-chart').innerWidth()-30)
@@ -25,6 +27,17 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
     .dimension(open_dates)
     .group(open_dates.group())
     .elasticY(true)
+
+  hourChart
+    .width($('#hour-chart').innerWidth()-30)
+    .height(250)
+    .margins({top: 10, left:20, right: 10, bottom:20})
+    .label(function(p){return p.key})
+    .x(d3.scale.linear().domain([1,24]))
+    .colors(singleColor)
+    .dimension(open_hours)
+    .group(open_hours.group())
+    .elasticY(true);
 
   sourceChart
     .width($('#source-chart').innerWidth()-30)
