@@ -1,7 +1,8 @@
+var dayChart = dc.barChart("#day-chart");
 var sourceChart = dc.rowChart("#source-chart");
-var singleColor = '#969CEB';
+var singleColor = ["#969CEB"];
 
-d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=100", function(err, data) {
+d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function(err, data) {
   var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
   data.forEach(function(d) {
     d.date_opened = dateFormat.parse(d.open_dt);
@@ -13,14 +14,27 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=100", function(
   var all = index.groupAll();
 
   var sources = index.dimension( function(d) { return d.source; });
+  var open_dates = index.dimension( function(d) { return d3.time.day(d.date_opened) } );
 
-  sourceChart.width($('#source-chart').innerWidth()-30)
-    .height(200)
-    // .colors(singleColor)
+  dayChart
+    .width($('#day-chart').innerWidth()-30)
+    .height(250)
+    .margins({top: 10, left:20, right: 10, bottom:20})
+    .x(d3.time.scale().domain([new Date(2011, 6, 1), new Date(2015, 2, 31)]))
+    .colors(singleColor)
+    .dimension(open_dates)
+    .group(open_dates.group())
+    .elasticY(true)
+
+  sourceChart
+    .width($('#source-chart').innerWidth()-30)
+    .height(185)
+    .colors(singleColor)
     .margins({top: 10, left:20, right: 10, bottom:20})
     .group(sources.group())
     .dimension(sources)
-    .elasticX(true);
+    .elasticX(true)
+    .ordering(function(d){return -d.value;});
 
   dc.renderAll();
 
