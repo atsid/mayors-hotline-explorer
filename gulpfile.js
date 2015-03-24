@@ -2,6 +2,7 @@ var gulp = require('gulp');
 var ghPages = require('gulp-gh-pages');
 var wiredep = require('wiredep').stream;
 var bower = require('gulp-bower');
+var watch = require('gulp-watch');
 
 /**
  * Push build to gh-pages
@@ -20,6 +21,7 @@ gulp.task('bower', function() {
  */
 gulp.task('wiredep', ['bower'], function() {
   gulp.src('./src/**/*')
+    .pipe(watch('src/**/*'))
     .pipe(wiredep({'ignorePath':'../dist/'}))
     .pipe(gulp.dest('./dist'));
 });
