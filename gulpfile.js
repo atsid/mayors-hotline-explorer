@@ -20,6 +20,6 @@ gulp.task('bower', function() {
  */
 gulp.task('wiredep', ['bower'], function() {
   gulp.src('./index.html')
-    .pipe(wiredep())
+    .pipe(wiredep({'ignorePath':'dist/'}))
     .pipe(gulp.dest('./dist'));
 });
