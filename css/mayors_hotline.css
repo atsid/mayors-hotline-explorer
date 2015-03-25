@@ -22,7 +22,38 @@ body {
 .small-div-marker {
     width: 2px;
     height: 2px;
-    background: blue;
-    border: 1px solid navy;
+    background: #1a8bba;
+    border: 1px solid #1a8bba;
     border-radius: 50%;
 }
+
+.marker-cluster-small {
+    /* #1a8bba */
+    background-color: rgba(26, 139, 186, 0.6);
+    color: #A6DBF2;
+}
+.marker-cluster-small div {
+    /* #1985B3 */
+    background-color: rgba(25, 133, 179, 0.6);
+}
+
+.marker-cluster-medium {
+    /* #1777A1 */
+    background-color: rgba(23, 119, 161, 0.6);
+    color: #A6DBF2;
+}
+.marker-cluster-medium div {
+    /* #146A8F */
+    background-color: rgba(20, 106, 143, 0.6);
+}
+
+.marker-cluster-large {
+    /* #125D7D */
+    background-color: rgba(18, 93, 125, 0.6);
+    color: #A6DBF2;
+}
+.marker-cluster-large div {
+    /* #0F506B */
+    background-color: rgba(15, 80, 107, 0.6);
+}
+
