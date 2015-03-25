@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "bootstrap": "~3.3.4",
-    "dcjs": "~1.7.3"
+    "dcjs": "~1.7.3",
+    "leaflet": "~0.7.3"
   }
 }
