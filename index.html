@@ -2,11 +2,13 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- bower:css -->
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="bower_components/dcjs/dc.css" />
   <link rel="stylesheet" href="bower_components/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="bower_components/leaflet.markercluster/dist/MarkerCluster.Default.css" />
   <!-- endbower -->
   <link rel="stylesheet" href="css/mayors_hotline.css">
   <title>Mayor's Hotline Explorer</title>
@@ -18,24 +20,41 @@
   <div class="col-md-8">
     <div class="row">
       <div class="col-md-12" id="date-chart">
-        <h5>Hotline Issue Volume Per Day
+        <h5>Hotline Volume by Date
             <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         </h5>
       </div>
     </div><!-- /row -->
     <div class="row">
+      <div class="col-md-3">
+        <div class="row">
+          <div class="col-md-12" id="day-chart" style="padding-bottom: 34px; padding-top: 33px">
+            <h5>Day of Week
+              <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            </h5>
+          </div>
+        </div><!-- /row -->
+      </div>      
       <div class="col-md-5" id="hour-chart">
-        <h5>Hotline Issue Volume Per Hour
+        <h5>Hotline Volume per Hour
             <a class="reset" href="javascript:hourChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         </h5>
       </div>
-      <div class="col-md-3" id="day-chart">
-        <h5>Day of Week
-          <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-      </div>
-      <div class="col-md-4" id="status-chart">
-        <h5>Status
-          <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+      <div class="col-md-4">
+        <div class="row">
+          <div class="col-md-12" id="source-chart">
+            <h5>Hotline Volume by Source
+              <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            </h5>
+          </div>
+        </div><!-- /row -->
+        <div class="row">
+          <div class="col-md-12" id="status-chart">
+            <h5>Status
+              <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            </h5>
+          </div>
+        </div><!-- /row -->
       </div>
     </div><!-- /row -->
     <div class="row">
@@ -44,15 +63,8 @@
   </div><!-- /left-column -->
   <div class="col-md-4">
     <div class="row">
-      <div class="col-md-12" id="source-chart">
-        <h5>Hotline Issues by Source
-          <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        </h5>
-      </div><!-- /row -->
-    </div>
-    <div class="row">
       <div class="col-md-12" id="neighborhood-chart">
-        <h5>Hotline Issues by Neighborhood
+        <h5>Hotline Volume by Neighborhood
           <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         </h5>
       </div>
@@ -67,6 +79,7 @@
   <script src="bower_components/dcjs/dc.js"></script>
   <script src="bower_components/leaflet/dist/leaflet.js"></script>
   <script src="bower_components/leaflet/dist/leaflet-src.js"></script>
+  <script src="bower_components/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
   <!-- endbower -->
   <script src="mayors_hotline.js"></script>
 
