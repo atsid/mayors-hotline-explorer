@@ -2,7 +2,7 @@ var dateChart = dc.barChart("#date-chart");
 var hourChart = dc.barChart("#hour-chart");
 var dayChart = dc.rowChart("#day-chart");
 var sourceChart = dc.rowChart("#source-chart");
-var statusChart = dc.pieChart("#status-chart");
+var statusChart = dc.rowChart("#status-chart");
 var neighborhoodChart = dc.rowChart("#neighborhood-chart");
 
 //var singleColor = ["#969CEB"];
@@ -96,49 +96,52 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
 
   hourChart
     .width($('#hour-chart').innerWidth()-30)
-    .height(250)
+    .height(227)
     .margins({top: 10, left:30, right: 10, bottom:20})
     .x(d3.scale.linear().domain([1,24]))
     .colors(singleColor)
     .dimension(open_hours)
     .group(open_hours.group())
+    .gap(1)
     .elasticY(true);
   hourChart.on("filtered", onFiltered);
 
   dayChart
     .width($('#day-chart').innerWidth()-30)
-    .height(250)
-    .margins({top: 10, left:5, right: 10, bottom:20})
+    .height(160)
+    .margins({top: 10, left:5, right: 10, bottom:-1})
     .label( function(i) { return i.key.split('.')[1]; })
     .title( function(i) { return i.key.split('.')[1] + ': ' + i.value; })
     .colors(singleColor)
     .dimension(open_days)
     .group(open_days.group())
     .elasticX(true)
-    .xAxis().ticks(3);
+    .gap(1)
+    .xAxis().ticks(0);
   dayChart.on("filtered", onFiltered);
 
   statusChart
     .width($('#status-chart').innerWidth()-30)
-    .height(250)
-    // .margins({top: 10, left:20, right: 10, bottom:20})
-    // .colors(singleColor)
-    .innerRadius(80)
-    .minAngleForLabel(0)
+    .height(55)
+    .margins({top: 10, left:5, right: 10, bottom:-1})
+    .colors(singleColor)
     .group(status.group())
-    .dimension(status);
+    .gap(1)
+    .dimension(status)
+    .xAxis().ticks(0);
   statusChart.on("filtered", onFiltered);
 
   sourceChart
     .width($('#source-chart').innerWidth()-30)
-    .height(165)
-    .margins({top: 10, left:5, right: 10, bottom:20})
+    .height(140)
+    .margins({top: 10, left:5, right: 10, bottom:-1})
     .colors(singleColor)
     .group(sources.group())
     .dimension(sources)
     .elasticX(true)
     .gap(1)
-    .ordering(function(i){return -i.value;});
+    .ordering(function(i){return -i.value;})
+    .xAxis().ticks(0);
   sourceChart.on("filtered", onFiltered);
 
   neighborhoodChart
