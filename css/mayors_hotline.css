@@ -7,6 +7,18 @@ body {
     margin: 40px;
 }
 
-#source-chart, #date-chart, #hour-chart, #day-chart, #status-chart, #neighborhood-chart {
+#source-chart, #date-chart, #hour-chart, #day-chart, #status-chart, #neighborhood-chart, #map {
     border: 1px solid black;
+}
+
+#map {
+    height: 250px;
+}
+
+.small-div-marker {
+    width: 2px;
+    height: 2px;
+    background: blue;
+    border: 1px solid navy;
+    border-radius: 50%;
 }
