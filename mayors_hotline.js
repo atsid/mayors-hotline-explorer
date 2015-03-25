@@ -4,6 +4,7 @@ var dayChart = dc.rowChart("#day-chart");
 var sourceChart = dc.rowChart("#source-chart");
 var statusChart = dc.rowChart("#status-chart");
 var neighborhoodChart = dc.rowChart("#neighborhood-chart");
+var reasonChart = dc.rowChart("#reason-chart");
 
 //var singleColor = ["#969CEB"];
 var singleColor = ["#1a8bba"];
@@ -80,6 +81,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
   });
   var status = index.dimension( function(d) { return d.case_status; } );
   var neighborhoods = index.dimension( function(d) { return d.neighborhood; } );
+  var reasons = index.dimension( function(d) { return d.reason } ); 
   locations = index.dimension( function(d) { return d.geocoded_location; });
 
   dateChart
@@ -155,6 +157,18 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
     .gap(1)
     .ordering(function(i){return -i.value;});
   neighborhoodChart.on("filtered", onFiltered);
+
+  reasonChart
+    .width($('#reason-chart').innerWidth()-30)
+    .height(600)
+    .margins({top: 10, left:5, right: 10, bottom:20})
+    .colors(singleColor)
+    .group(reasons.group())
+    .dimension(reasons)
+    .elasticX(true)
+    .gap(1)
+    .ordering(function(i){return -i.value;});
+  reasonChart.on("filtered", onFiltered);
 
   dc.renderAll();
 

@@ -11,12 +11,12 @@ body {
     margin: 40px;
 }
 
-#source-chart, #date-chart, #hour-chart, #day-chart, #status-chart, #neighborhood-chart, #map {
+#source-chart, #date-chart, #hour-chart, #day-chart, #status-chart, #neighborhood-chart, #reason-chart, #map {
     border: 1px solid black;
 }
 
 #map {
-    height: 250px;
+    height: 500px;
 }
 
 .small-div-marker {
