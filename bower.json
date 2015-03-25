@@ -18,6 +18,16 @@
   "dependencies": {
     "bootstrap": "~3.3.4",
     "dcjs": "~1.7.3",
-    "leaflet": "~0.7.3"
+    "leaflet": "~0.7.3",
+    "leaflet.markercluster": "~0.4.0"
+  },
+  "overrides": {
+    "leaflet.markercluster": {
+      "main": [
+        "dist/leaflet.markercluster.js",
+        "dist/MarkerCluster.css",
+        "dist/MarkerCluster.Default.css"
+      ]
+    }
   }
 }

@@ -5,15 +5,18 @@ var sourceChart = dc.rowChart("#source-chart");
 var statusChart = dc.pieChart("#status-chart");
 var neighborhoodChart = dc.rowChart("#neighborhood-chart");
 
-var singleColor = ["#969CEB"];
+//var singleColor = ["#969CEB"];
+var singleColor = ["#1a8bba"];
 
 
 var smallIcon = L.divIcon({className: "small-div-marker"});
 var mapMarkersLayer = L.layerGroup();
+var mapClustersLayer = L.markerClusterGroup();
 var map = L.map('map', {
   center: [42.351, -71.065],
   zoom: 12,
-  layers: [mapMarkersLayer]
+  maxZoom: 18,
+  layers: [mapMarkersLayer, mapClustersLayer]
 });
 
 // L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -33,11 +36,13 @@ var onFiltered = function(chart, filter) {
 
 var updateMap = function(locs) {
   mapMarkersLayer.clearLayers();
+  mapClustersLayer.clearLayers();
           
   locs.forEach( function(d) {
     if (d.geocoded_location.latitude!=null && d.geocoded_location.latitude!=undefined) {
       var marker = L.marker([d.geocoded_location.latitude, d.geocoded_location.longitude], {icon: smallIcon}).bindPopup(d.case_title);
-      mapMarkersLayer.addLayer(marker);
+      // mapMarkersLayer.addLayer(marker);
+      mapClustersLayer.addLayer(marker);
     }
   });
 };
@@ -46,6 +51,8 @@ var updateMap = function(locs) {
 // Note that we're currently limiting the amount of data retrieved from the Socrata API
 // Their API's maximum limit is 50,000 records. There are about 500,000 in the dataset.
 // May need to switch to a local CSV  to access the full dataset.
+
+// Add $order query param to be able to see most recent data.
 d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function(err, data) {
   var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
   data.forEach(function(d) {
@@ -55,7 +62,8 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
 
     if (d.geocoded_location.latitude!=null && d.geocoded_location.latitude!=undefined) {
       var marker = L.marker([d.geocoded_location.latitude, d.geocoded_location.longitude], {icon: smallIcon}).bindPopup(d.case_title);
-      mapMarkersLayer.addLayer(marker);
+      // mapMarkersLayer.addLayer(marker);
+      mapClustersLayer.addLayer(marker);
     }
   });
 
@@ -78,7 +86,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
     .width($('#date-chart').innerWidth()-30)
     .height(150)
     .margins({top: 10, left:20, right: 10, bottom:20})
-    .x(d3.time.scale().domain([new Date(2011, 6, 1), new Date(2015, 2, 31)]))
+    .x(d3.time.scale().domain([new Date(2011, 6, 1), new Date(2015, 3, 4)]))
     .colors(singleColor)
     .dimension(open_dates)
     .group(open_dates.group())
@@ -89,7 +97,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
   hourChart
     .width($('#hour-chart').innerWidth()-30)
     .height(250)
-    .margins({top: 10, left:20, right: 10, bottom:20})
+    .margins({top: 10, left:30, right: 10, bottom:20})
     .x(d3.scale.linear().domain([1,24]))
     .colors(singleColor)
     .dimension(open_hours)
@@ -100,8 +108,9 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
   dayChart
     .width($('#day-chart').innerWidth()-30)
     .height(250)
-    .margins({top: 10, left:20, right: 10, bottom:20})
+    .margins({top: 10, left:5, right: 10, bottom:20})
     .label( function(i) { return i.key.split('.')[1]; })
+    .title( function(i) { return i.key.split('.')[1] + ': ' + i.value; })
     .colors(singleColor)
     .dimension(open_days)
     .group(open_days.group())
@@ -123,7 +132,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
   sourceChart
     .width($('#source-chart').innerWidth()-30)
     .height(165)
-    .margins({top: 10, left:20, right: 10, bottom:20})
+    .margins({top: 10, left:5, right: 10, bottom:20})
     .colors(singleColor)
     .group(sources.group())
     .dimension(sources)
@@ -135,7 +144,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=1000", function
   neighborhoodChart
     .width($('#neighborhood-chart').innerWidth()-30)
     .height(435)
-    .margins({top: 10, left:20, right: 10, bottom:20})
+    .margins({top: 10, left:5, right: 10, bottom:20})
     .colors(singleColor)
     .group(neighborhoods.group())
     .dimension(neighborhoods)
