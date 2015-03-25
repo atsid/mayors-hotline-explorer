@@ -9,6 +9,7 @@ This site, the Mayor's Hotline Explorer provides an interactive visualization of
 ## Technologies used
 * [dc.js](http://dc-js.github.io/dc.js/)
 * [crossfilter](http://square.github.io/crossfilter/)
+* [leaflet.js](http://leafletjs.com/)
 
 ### Development tools used
 * [GitHub Pages](https://pages.github.com/)
