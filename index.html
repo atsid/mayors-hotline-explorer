@@ -14,75 +14,80 @@
   <title>Mayor's Hotline Explorer</title>
 </head>
 <body>
-  <h1>Mayor's Hotline Explorer <small>Last 30 days</small></h1>
-  <div class="col-xs-12">  
-    <div class="data-count">
-      Displaying <span class="filter-count"></span> out of <span class="total-count"></span> records | <a
-                href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a>
+  <div class="jumbotron" id="jumbotron">
+    <div class="container">
+      <h1>Mayor's Hotline Explorer <small>(last 30 days)</small></h1>
+      <p>This interactive tool allows you to explore the last 30 days' submissions to the City of Boston's <a href="http://www.cityofboston.gov/mayor/24/">Mayor's 24-Hour Constituent Services Hotline</a>. The displays are all inter-connected&mdash;click on a row in one of the bar charts to filter on that value. Click-and-drag to select a time range on the time graph to analyze a particular time range. <em>Please note that it takes a moment to load the initial data.</em></p>
     </div>
   </div>
 
-
-  <div class="col-md-8">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-md-12" id="date-chart">
-        <h5>Hotline Volume
-            <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        </h5>
+      <div class="col-md-12">
+        <div class="data-count">Displaying <span class="filter-count"></span> out of <span class="total-count"></span> records | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a></div>
       </div>
-    </div><!-- /row -->
-    <div class="row">
-      <div class="col-md-3">
-        <div class="row">
-          <div class="col-md-12" id="day-chart" style="padding-bottom: 34px; padding-top: 33px">
+    </div>
+
+    <div class="col-sm-7">
+      <div class="row">
+        <div class="col-xs-12" id="date-chart">
+          <h5>Hotline Volume
+            <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+          </h5>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-3" id="day-chart" style="padding-bottom: 34px; padding-top: 33px">
             <h5>Day of Week
               <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
             </h5>
-          </div>
-        </div><!-- /row -->
-      </div>      
-      <div class="col-md-5" id="hour-chart">
-        <h5>Hour of Day
+        </div>
+        <div class="col-xs-12 col-sm-6" id="hour-chart">
+          <h5>Hour of Day
             <a class="reset" href="javascript:hourChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        </h5>
-      </div>
-      <div class="col-md-4">
-        <div class="row">
-          <div class="col-md-12" id="source-chart">
-            <h5>Source
-              <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-            </h5>
+          </h5>
+        </div>
+        <div class="col-sm-3">
+          <div class="row">
+            <div class="col-xs-12" id="source-chart">
+              <h5>Source
+                <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              </h5>
+            </div>
+          </div><!-- /row -->
+          <div class="row">
+            <div class="col-xs-12" id="status-chart">
+              <h5>Status
+                <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              </h5>
+            </div>
           </div>
-        </div><!-- /row -->
-        <div class="row">
-          <div class="col-md-12" id="status-chart">
-            <h5>Status
-              <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+        </div>    
+      </div>
+      <div class="row">
+        <div id="map"></div>
+      </div>
+    </div>
+          
+    <div class="col-sm-5">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6" id="reason-chart">
+          <!-- <div id="reason-chart"> -->
+            <h5>Reason for Hotline Request
+              <a class="reset" href="javascript:reasonChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
             </h5>
-          </div>
-        </div><!-- /row -->
+          <!-- </div> -->
+        </div>
+        <div class="col-xs-12 col-sm-6" id="neighborhood-chart">
+          <!-- <div id="neighborhood-chart"> -->
+            <h5>Hotline Volume by Neighborhood
+              <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            </h5>
+          <!-- </div> -->
+        </div>
       </div>
-    </div><!-- /row -->
-    <div class="row">
-      <div id="map"></div>
-    </div><!-- /row -->
-  </div><!-- /left-column -->
-  <div class="col-md-4">
-    <div class="row">
-      <div class="col-md-12" id="neighborhood-chart">
-        <h5>Hotline Volume by Neighborhood
-          <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        </h5>
-      </div>
-    </div><!-- /row -->
-    <div class="row">
-      <div class="col-md-12" id="reason-chart">
-        <h5>Reason for Hotline Request
-          <a class="reset" href="javascript:reasonChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-        </h5>
-      </div>
-    </div><!-- /row -->
-  </div><!-- /right-column -->
+    </div>
+  </div>
 
   <!-- bower:js -->
   <script src="bower_components/jquery/dist/jquery.js"></script>

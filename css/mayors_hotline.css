@@ -7,16 +7,25 @@
     margin-bottom: 0px;
 }
 
-body {
-    margin: 40px;
+.jumbotron {
+    color: white;
+    background-color: #0F506B;
+}
+
+.jumbotron h1 small {
+    color: #ccc;
+}
+
+.jumbotron a {
+    color: lightskyblue;
 }
 
 #source-chart, #date-chart, #hour-chart, #day-chart, #status-chart, #neighborhood-chart, #reason-chart, #map {
-    border: 1px solid black;
+    border: 1px solid #ddf;
 }
 
 #map {
-    height: 500px;
+    height: 518px;
 }
 
 .small-div-marker {

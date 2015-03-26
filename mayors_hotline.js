@@ -28,7 +28,7 @@ var map = L.map('map', {
 // }).addTo(map);
 
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
-  attribution: 'Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
     maxZoom:18
 }).addTo(map);
 
@@ -45,7 +45,7 @@ var updateMap = function(locs) {
     if (d.geocoded_location.latitude!=null && d.geocoded_location.latitude!=undefined) {
       var marker = L.marker([d.geocoded_location.latitude, d.geocoded_location.longitude], {icon: smallIcon}).bindPopup(d.case_title);
       // mapMarkersLayer.addLayer(marker);
-      mapClustersLayer.addLayer(marker);
+      // mapClustersLayer.addLayer(marker);
     }
   });
 };
@@ -69,7 +69,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     if (d.geocoded_location.latitude!=null && d.geocoded_location.latitude!=undefined) {
       var marker = L.marker([d.geocoded_location.latitude, d.geocoded_location.longitude], {icon: smallIcon}).bindPopup(d.case_title);
       // mapMarkersLayer.addLayer(marker);
-      mapClustersLayer.addLayer(marker);
+      // mapClustersLayer.addLayer(marker);
     }
   });
 
@@ -100,19 +100,20 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
 
   dateChart
     .width($('#date-chart').innerWidth()-30)
-    .height(150)
+    .height(200)
     .margins({top: 10, left:30, right: 10, bottom:20})
     .x(d3.time.scale().domain([thirty_days_ago, today]))
     .colors(singleColor)
     .dimension(open_dates)
     .group(open_dates.group())
+    .renderArea(true)
     .elasticY(true)
     .yAxis().ticks(6);
   //dateChart.on("filtered", onFiltered);
 
   hourChart
     .width($('#hour-chart').innerWidth()-30)
-    .height(227)
+    .height(250)
     .margins({top: 10, left:35, right: 10, bottom:20})
     .x(d3.scale.linear().domain([1,24]))
     .colors(singleColor)
@@ -124,7 +125,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
 
   dayChart
     .width($('#day-chart').innerWidth()-30)
-    .height(160)
+    .height(183)
     .margins({top: 10, left:5, right: 10, bottom:-1})
     .label( function(i) { return i.key.split('.')[1]; })
     .title( function(i) { return i.key.split('.')[1] + ': ' + i.value; })
@@ -138,7 +139,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
 
   statusChart
     .width($('#status-chart').innerWidth()-30)
-    .height(55)
+    .height(60)
     .margins({top: 10, left:5, right: 10, bottom:-1})
     .colors(singleColor)
     .group(status.group())
@@ -149,7 +150,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
 
   sourceChart
     .width($('#source-chart').innerWidth()-30)
-    .height(140)
+    .height(158)
     .margins({top: 10, left:5, right: 10, bottom:-1})
     .colors(singleColor)
     .group(sources.group())
