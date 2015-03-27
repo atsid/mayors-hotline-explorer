@@ -3,6 +3,7 @@ var ghPages = require('gulp-gh-pages');
 var wiredep = require('wiredep').stream;
 var bower = require('gulp-bower');
 var watch = require('gulp-watch');
+var runSequence = require('run-sequence');
 
 /**
  * Push build to gh-pages
@@ -13,7 +14,11 @@ gulp.task('deploy', ['wiredep'], function() {
 });
 
 gulp.task('bower', function() {
-  bower();
+  return bower().pipe(gulp.dest('./dist/bower_components'));
+});
+
+gulp.task('copy-images', function() {
+  gulp.src('./img/**/*').pipe(gulp.dest('./dist/img'));
 });
 
 /**
@@ -21,7 +26,12 @@ gulp.task('bower', function() {
  */
 gulp.task('wiredep', ['bower'], function() {
   gulp.src('./src/**/*')
-    .pipe(watch('src/**/*'))
     .pipe(wiredep({'ignorePath':'../dist/'}))
     .pipe(gulp.dest('./dist'));
 });
+
+gulp.task('build', runSequence(
+  'bower',
+  'wiredep',
+  'copy-images'
+));

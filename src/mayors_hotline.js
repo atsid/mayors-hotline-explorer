@@ -13,7 +13,7 @@ var singleColor = ["#1a8bba"];
 
 
 var smallIcon = L.divIcon({className: "small-div-marker"});
-var mapClustersLayer = L.markerClusterGroup();
+var mapClustersLayer = L.markerClusterGroup({maxClusterRadius: 60});
 var map = L.map('map', {
   center: [42.313, -71.099],
   zoom: 11,
@@ -36,7 +36,10 @@ var updateMap = function(locs) {
   var markers = locs.map(function(item){
     if( item.geocoded_location.latitude!=null && item.geocoded_location.latitude!=undefined) {
       return L.marker([item.geocoded_location.latitude, item.geocoded_location.longitude],
-        {icon: smallIcon}).bindPopup(item.case_title);
+        {icon: smallIcon}).bindPopup(
+
+        item.case_title
+        );
     }
   });
   mapClustersLayer.addLayers(markers);          
