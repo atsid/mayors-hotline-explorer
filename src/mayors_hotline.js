@@ -7,25 +7,19 @@ var sourceChart = dc.rowChart("#source-chart");
 var statusChart = dc.rowChart("#status-chart");
 var neighborhoodChart = dc.rowChart("#neighborhood-chart");
 var reasonChart = dc.rowChart("#reason-chart");
+var dataCount = dc.dataCount('.data-count');
 
-//var singleColor = ["#969CEB"];
 var singleColor = ["#1a8bba"];
 
 
 var smallIcon = L.divIcon({className: "small-div-marker"});
-var mapMarkersLayer = L.layerGroup();
 var mapClustersLayer = L.markerClusterGroup();
 var map = L.map('map', {
-  center: [42.351, -71.065],
-  zoom: 12,
+  center: [42.313, -71.099],
+  zoom: 11,
   maxZoom: 18,
-  layers: [mapMarkersLayer, mapClustersLayer]
+  layers: [mapClustersLayer]
 });
-
-// L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-//     maxZoom: 18
-// }).addTo(map);
 
 L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
   attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>',
@@ -38,39 +32,27 @@ var onFiltered = function(chart, filter) {
 };
 
 var updateMap = function(locs) {
-  mapMarkersLayer.clearLayers();
   mapClustersLayer.clearLayers();
-          
-  locs.forEach( function(d) {
-    if (d.geocoded_location.latitude!=null && d.geocoded_location.latitude!=undefined) {
-      var marker = L.marker([d.geocoded_location.latitude, d.geocoded_location.longitude], {icon: smallIcon}).bindPopup(d.case_title);
-      // mapMarkersLayer.addLayer(marker);
-      // mapClustersLayer.addLayer(marker);
+  var markers = locs.map(function(item){
+    if( item.geocoded_location.latitude!=null && item.geocoded_location.latitude!=undefined) {
+      return L.marker([item.geocoded_location.latitude, item.geocoded_location.longitude],
+        {icon: smallIcon}).bindPopup(item.case_title);
     }
   });
+  mapClustersLayer.addLayers(markers);          
 };
 
 var today = new Date();
 var thirty_days_ago = d3.time.day(new Date(today.getTime() - 30*24*60*60*1000));
 var tda_date = thirty_days_ago.toISOString().substring(0,10);
 
-// Note that we're currently limiting the amount of data retrieved from the Socrata API
-// Their API's maximum limit is 50,000 records. There are about 500,000 in the dataset.
-// May need to switch to a local CSV  to access the full dataset.
 
-// Add $order query param to be able to see most recent data.
 d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=open_dt>'"+tda_date+"'", function(err, data) {
   var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
   data.forEach(function(d) {
     d.date_opened = dateFormat.parse(d.open_dt);
     d.date_target = d.target_dt ? dateFormat.parse(d.target_dt) : null;
     d.date_closed = d.closed_dt ? dateFormat.parse(d.closed_dt) : null;
-
-    if (d.geocoded_location.latitude!=null && d.geocoded_location.latitude!=undefined) {
-      var marker = L.marker([d.geocoded_location.latitude, d.geocoded_location.longitude], {icon: smallIcon}).bindPopup(d.case_title);
-      // mapMarkersLayer.addLayer(marker);
-      // mapClustersLayer.addLayer(marker);
-    }
   });
 
   var index = crossfilter(data);
@@ -89,14 +71,9 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
   var reasons = index.dimension( function(d) { return d.reason } ); 
   locations = index.dimension( function(d) { return d.geocoded_location; });
 
-  dc.dataCount('.data-count')
+  dataCount
     .dimension(index)
     .group(all);
-    // .html({
-    //     some:'<strong>%filter-count</strong> selected out of <strong>%total-count</strong> records' +
-    //         ' | <a href=\'javascript:dc.filterAll(); dc.renderAll();\'\'>Reset All</a>',
-    //     all:'All records selected. Please click on the graph to apply filters.'
-    // });
 
   dateChart
     .width($('#date-chart').innerWidth()-30)
@@ -109,7 +86,7 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .renderArea(true)
     .elasticY(true)
     .yAxis().ticks(6);
-  //dateChart.on("filtered", onFiltered);
+  dateChart.on("postRedraw", onFiltered);
 
   hourChart
     .width($('#hour-chart').innerWidth()-30)
@@ -121,7 +98,6 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .group(open_hours.group())
     .gap(1)
     .elasticY(true);
-  //hourChart.on("filtered", onFiltered);
 
   dayChart
     .width($('#day-chart').innerWidth()-30)
@@ -135,7 +111,6 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .elasticX(true)
     .gap(1)
     .xAxis().ticks(0);
-  //dayChart.on("filtered", onFiltered);
 
   statusChart
     .width($('#status-chart').innerWidth()-30)
@@ -146,7 +121,6 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .gap(1)
     .dimension(status)
     .xAxis().ticks(0);
-  //statusChart.on("filtered", onFiltered);
 
   sourceChart
     .width($('#source-chart').innerWidth()-30)
@@ -159,7 +133,6 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .gap(1)
     .ordering(function(i){return -i.value;})
     .xAxis().ticks(0);
-  //sourceChart.on("filtered", onFiltered);
 
   neighborhoodChart
     .width($('#neighborhood-chart').innerWidth()-30)
@@ -170,8 +143,8 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .dimension(neighborhoods)
     .elasticX(true)
     .gap(1)
-    .ordering(function(i){return -i.value;});
-  //neighborhoodChart.on("filtered", onFiltered);
+    .ordering(function(i){return -i.value;})
+    .xAxis().ticks(4);
 
   reasonChart
     .width($('#reason-chart').innerWidth()-30)
@@ -182,9 +155,10 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     .dimension(reasons)
     .elasticX(true)
     .gap(1)
-    .ordering(function(i){return -i.value;});
-  //reasonChart.on("filtered", onFiltered);
+    .ordering(function(i){return -i.value;})
+    .xAxis().ticks(4);
 
   dc.renderAll();
+  updateMap(locations.top(Infinity));
 
 });
