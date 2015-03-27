@@ -34,11 +34,13 @@ var onFiltered = function(chart, filter) {
 var updateMap = function(locs) {
   mapClustersLayer.clearLayers();
   var markers = locs.map(function(item){
-    if( item.geocoded_location.latitude!=null && item.geocoded_location.latitude!=undefined) {
-      return L.marker([item.geocoded_location.latitude, item.geocoded_location.longitude],
+    if( item.g.latitude!=null && item.g.latitude!=undefined) {
+      return L.marker([item.g.latitude, item.g.longitude],
         {icon: smallIcon}).bindPopup(
-
-        item.case_title
+          item.t + "<br/>" +
+          item.l + "<br/><strong>Opened: </strong>" +
+          item.d + "<br/><strong>Status: </strong>" +
+          item.a
         );
     }
   });
@@ -50,18 +52,30 @@ var thirty_days_ago = d3.time.day(new Date(today.getTime() - 30*24*60*60*1000));
 var tda_date = thirty_days_ago.toISOString().substring(0,10);
 
 
-d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=open_dt>'"+tda_date+"'", function(err, data) {
-  var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
+var boston_data_url = "https://data.cityofboston.gov/resource/awu8-dc52.csv?" + 
+  "$limit=50000&" +
+  /* Renaming the columns to single-char-names helps reduce the payload,
+      as does selecting only the columns we use. */
+  "$select=open_dt as d, source as s, case_status as a, neighborhood as n, " +
+    "geocoded_location as g, location as l, case_title as t, reason as r&" +
+  "$where=open_dt>'"+tda_date+"'";
+
+d3.csv(boston_data_url, function(err, data) {
+  //var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
+  var dateFormat = d3.time.format("%m/%d/%Y %H:%M:%S %p");
   data.forEach(function(d) {
-    d.date_opened = dateFormat.parse(d.open_dt);
-    d.date_target = d.target_dt ? dateFormat.parse(d.target_dt) : null;
-    d.date_closed = d.closed_dt ? dateFormat.parse(d.closed_dt) : null;
+    d.date_opened = dateFormat.parse(d.d);
+    var lat = d.g.split(',')[0].slice(1);
+    var lon = d.g.split(',')[1].slice(0,-1);
+    d.g = { latitude: lat, longitude: lon };
+    // d.date_target = d.target_dt ? dateFormat.parse(d.target_dt) : null;
+    // d.date_closed = d.closed_dt ? dateFormat.parse(d.closed_dt) : null;
   });
 
   var index = crossfilter(data);
   var all = index.groupAll();
 
-  var sources = index.dimension( function(d) { return d.source; });
+  var sources = index.dimension( function(d) { return d.s; });
   var open_dates = index.dimension( function(d) { return d3.time.hour(d.date_opened); } );
   var open_hours = index.dimension( function(d) { return d.date_opened.getHours()+1; } );
   var open_days = index.dimension( function(d) { 
@@ -69,10 +83,10 @@ d3.json("https://data.cityofboston.gov/resource/awu8-dc52?$limit=50000&$where=op
     var name = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     return day + '.' + name[day];
   });
-  var status = index.dimension( function(d) { return d.case_status; } );
-  var neighborhoods = index.dimension( function(d) { return d.neighborhood; } );
-  var reasons = index.dimension( function(d) { return d.reason } ); 
-  locations = index.dimension( function(d) { return d.geocoded_location; });
+  var status = index.dimension( function(d) { return d.a; } );
+  var neighborhoods = index.dimension( function(d) { return d.n; } );
+  var reasons = index.dimension( function(d) { return d.r; } ); 
+  locations = index.dimension( function(d) { return d.g; });
 
   dataCount
     .dimension(index)
