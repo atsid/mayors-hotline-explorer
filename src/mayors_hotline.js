@@ -51,7 +51,7 @@ var updateMap = function(locs) {
 };
 
 var today = new Date();
-var thirty_days_ago = new Date(today.getTime() - 30*24*60*60*1000);
+var thirty_days_ago = d3.time.day(new Date(today.getTime() - 30*24*60*60*1000));
 var tda_date = thirty_days_ago.toISOString().substring(0,10);
 
 // Note that we're currently limiting the amount of data retrieved from the Socrata API
