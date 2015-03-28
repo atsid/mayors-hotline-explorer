@@ -7,13 +7,14 @@ var sourceChart = dc.rowChart("#source-chart");
 var statusChart = dc.rowChart("#status-chart");
 var neighborhoodChart = dc.rowChart("#neighborhood-chart");
 var reasonChart = dc.rowChart("#reason-chart");
+var openDaysChart = dc.rowChart("#opendays-chart");
 var dataCount = dc.dataCount('.data-count');
 
 var singleColor = ["#1a8bba"];
 
 
 var smallIcon = L.divIcon({className: "small-div-marker"});
-var mapClustersLayer = L.markerClusterGroup({maxClusterRadius: 60});
+var mapClustersLayer = L.markerClusterGroup({maxClusterRadius: 50});
 var map = L.map('map', {
   center: [42.313, -71.099],
   zoom: 11,
@@ -37,10 +38,11 @@ var updateMap = function(locs) {
     if( item.g.latitude!=null && item.g.latitude!=undefined) {
       return L.marker([item.g.latitude, item.g.longitude],
         {icon: smallIcon}).bindPopup(
-          item.t + "<br/>" +
-          item.l + "<br/><strong>Opened: </strong>" +
-          item.d + "<br/><strong>Status: </strong>" +
-          item.a
+          item.t + 
+          "<br/>" + item.l +
+          "<br/><strong>Enquiry ID:</strong>" + item.id + 
+          "<br/><strong>Opened: </strong>" + item.d + 
+          "<br/><strong>Status: </strong>" + item.a
         );
     }
   });
@@ -56,21 +58,29 @@ var boston_data_url = "https://data.cityofboston.gov/resource/awu8-dc52.csv?" +
   "$limit=50000&" +
   /* Renaming the columns to single-char-names helps reduce the payload,
       as does selecting only the columns we use. */
-  "$select=open_dt as d, source as s, case_status as a, neighborhood as n, " +
-    "geocoded_location as g, location as l, case_title as t, reason as r&" +
-  "$where=open_dt>'"+tda_date+"'";
+  "$select=case_enquiry_id as id, " +
+  "open_dt as d, " +
+  "closed_dt as c, " +
+  "source as s, " +
+  "case_status as a, " +
+  "neighborhood as n, " +
+  "geocoded_location as g, " +
+  "location as l, " +
+  "case_title as t, " + 
+  "reason as r&" +
+  "$where=open_dt>'" + tda_date + "'";
 
 d3.csv(boston_data_url, function(err, data) {
   //var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%S");
   var dateFormat = d3.time.format("%m/%d/%Y %H:%M:%S %p");
   data.forEach(function(d) {
     d.date_opened = dateFormat.parse(d.d);
+    d.date_closed = (d.c !== "") ? dateFormat.parse(d.c) : today;
     var lat = d.g.split(',')[0].slice(1);
     var lon = d.g.split(',')[1].slice(0,-1);
     d.n = (d.n !== "") ? d.n : "Not reported";
     d.g = { latitude: lat, longitude: lon };
-    // d.date_target = d.target_dt ? dateFormat.parse(d.target_dt) : null;
-    // d.date_closed = d.closed_dt ? dateFormat.parse(d.closed_dt) : null;
+    d.time_to_close = Math.round((d.date_closed - d.date_opened)/1000/60/60/24);
   });
 
   var index = crossfilter(data);
@@ -88,6 +98,7 @@ d3.csv(boston_data_url, function(err, data) {
   var neighborhoods = index.dimension( function(d) { return d.n; } );
   var reasons = index.dimension( function(d) { return d.r; } ); 
   locations = index.dimension( function(d) { return d.g; });
+  var days_open = index.dimension( function(d) { return d.time_to_close; });
 
   dataCount
     .dimension(index)
@@ -138,6 +149,7 @@ d3.csv(boston_data_url, function(err, data) {
     .group(status.group())
     .gap(1)
     .dimension(status)
+    .elasticX(true)
     .xAxis().ticks(0);
 
   sourceChart
@@ -163,7 +175,7 @@ d3.csv(boston_data_url, function(err, data) {
     .gap(1)
     .ordering(function(i){return -i.value;})
     .labelOffsetY(12)
-    .xAxis().ticks(4);
+    .xAxis().ticks(2);
 
   reasonChart
     .width($('#reason-chart').innerWidth()-30)
@@ -176,7 +188,19 @@ d3.csv(boston_data_url, function(err, data) {
     .gap(1)
     .ordering(function(i){return -i.value;})
     .labelOffsetY(12)
-    .xAxis().ticks(4);
+    .xAxis().ticks(2);
+
+  openDaysChart
+    .width($('#opendays-chart').innerWidth()-30)
+    .height(533)
+    .margins({top: 10, left:5, right: 10, bottom:20})
+    .colors(singleColor)
+    .group(days_open.group())
+    .dimension(days_open)
+    .elasticX(true)
+    .gap(1)
+    .labelOffsetY(12)
+    .xAxis().ticks(2);
 
   dc.renderAll();
   updateMap(locations.top(Infinity));
