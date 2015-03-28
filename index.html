@@ -36,33 +36,33 @@
     <div class="col-sm-7">
       <div class="row">
         <div class="col-xs-12" id="date-chart">
-          <h5>Hotline Volume
+          <h5>Hotline Volume by Hour
             <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
           </h5>
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-3" id="day-chart" style="padding-bottom: 34px; padding-top: 33px">
-            <h5>Day of Week
+        <div class="col-xs-12 col-sm-3" id="day-chart" style="padding-bottom: 67px;">
+            <h5>Submission Day of Week
               <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
             </h5>
         </div>
         <div class="col-xs-12 col-sm-6" id="hour-chart">
-          <h5>Hour of Day
+          <h5>Submission Hour of Day
             <a class="reset" href="javascript:hourChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
           </h5>
         </div>
         <div class="col-sm-3">
           <div class="row">
             <div class="col-xs-12" id="source-chart">
-              <h5>Source
+              <h5>Submission Source
                 <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
               </h5>
             </div>
           </div><!-- /row -->
           <div class="row">
             <div class="col-xs-12" id="status-chart">
-              <h5>Status
+              <h5>Case Status
                 <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
               </h5>
             </div>
@@ -77,18 +77,19 @@
     <div class="col-sm-5">
       <div class="row">
         <div class="col-xs-12 col-sm-6" id="reason-chart">
-          <!-- <div id="reason-chart"> -->
-            <h5>Reason for Hotline Request
+            <h5>Submission Reason
               <a class="reset" href="javascript:reasonChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
             </h5>
-          <!-- </div> -->
         </div>
         <div class="col-xs-12 col-sm-6" id="neighborhood-chart">
-          <!-- <div id="neighborhood-chart"> -->
-            <h5>Hotline Volume by Neighborhood
+            <h5>Submission by Neighborhood
               <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
             </h5>
-          <!-- </div> -->
+        </div>
+        <div class="col-xs-12 col-sm-6" id="opendays-chart">
+            <h5># of Days Case Open
+              <a class="reset" href="javascript:openDaysChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            </h5>
         </div>
       </div>
     </div>
@@ -96,7 +97,7 @@
 
   <footer>
     <div class="container-fluid">
-      <p class="pull-right">An <a href="http://labs.atsid.com" title="ATS Website" target="_blank"><img src="img/ats.png" width="30" alt="Applied Technical Systems, Inc. (ATS)" style="vertical-align: baseline;"/></a> Labs project. See <a href="https://github.com/atsid/mayors-hotline-explorer">the source code on GitHub</a> for details.</p>
+      <p class="pull-right">An <a href="http://labs.atsid.com" title="Applied Technical Systems, Inc. (ATS) website" target="_blank"><img src="img/ats.png" width="30" alt="Applied Technical Systems, Inc. (ATS)" style="vertical-align: baseline;"/></a> Labs project, licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License, Version 2.0</a>. See <a href="https://github.com/atsid/mayors-hotline-explorer" target="_blank">the source code on GitHub</a> for details.</p>
     </div>
   </footer>
 
