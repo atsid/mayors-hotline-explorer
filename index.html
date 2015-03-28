@@ -18,7 +18,7 @@
     <div class="jumbotron" id="jumbotron">
       <div class="container">
         <h1>Mayor's Hotline Explorer <small>(last 30 days)</small></h1>
-        <p>This interactive tool allows you to explore the last 30 days' submissions to the City of Boston's <a href="http://www.cityofboston.gov/mayor/24/">Mayor's 24-Hour Constituent Services Hotline</a>. The displays are all inter-connected&mdash;click on a row in one of the bar charts to filter on that value. Click-and-drag to select a time range on the time graph to analyze a particular time range.<br/><em>Please note that it takes a moment to load the initial data.</em></p>
+        <p>This interactive tool allows you to explore the submissions from the last 30 days to the City of Boston's <a href="http://www.cityofboston.gov/mayor/24/">Mayor's 24-Hour Constituent Services Hotline</a>. The displays are all inter-connected&mdash;tap on a row in one of the bar charts to filter on that value. Click-and-drag to select a range on the time graph to analyze a particular time range.<br/><em>Please note that it takes a moment to load the initial data.</em></p>
       </div>
       <div class="caption">
         <small class="text-muted">Photo credit: <a href="https://www.flickr.com/photos/werkunz/4608613719">"Boston Downtown at Night"</a> by <a href="https://www.flickr.com/photos/werkunz/">Werner Kunz</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/2.0/">CC BY-NC-SA 2.0</a>.</small>
@@ -29,67 +29,100 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12">
-        <div class="data-count">Displaying <span class="filter-count"></span> out of <span class="total-count"></span> records | <a href="javascript:dc.filterAll(); dc.renderAll();">Reset All</a></div>
+        <div class="data-count">
+          Displaying <span class="filter-count"></span> out of <span class="total-count"></span> records | <a href="javascript:dc.filterAll(); dc.renderAll(); dateChart.redraw();">Reset All</a> | <a href="#" data-toggle="modal" data-target=".bs-example-modal-lg">See details for filtered records (limit 100)</a>
+        </div>
       </div>
     </div>
 
-    <div class="col-sm-7">
-      <div class="row">
-        <div class="col-xs-12" id="date-chart">
-          <h5>Hotline Volume by Hour
-            <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-          </h5>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12 col-sm-3" id="day-chart" style="padding-bottom: 67px;">
-            <h5>Submission Day of Week
-              <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+    <div class="row">
+      <div class="col-sm-7">
+        <div class="row">
+          <div class="col-xs-12" id="date-chart">
+            <h5>Hotline Volume by Hour
+              <a class="reset" href="javascript:dateChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
             </h5>
-        </div>
-        <div class="col-xs-12 col-sm-6" id="hour-chart">
-          <h5>Submission Hour of Day
-            <a class="reset" href="javascript:hourChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-          </h5>
-        </div>
-        <div class="col-sm-3">
-          <div class="row">
-            <div class="col-xs-12" id="source-chart">
-              <h5>Submission Source
-                <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-              </h5>
-            </div>
-          </div><!-- /row -->
-          <div class="row">
-            <div class="col-xs-12" id="status-chart">
-              <h5>Case Status
-                <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-              </h5>
-            </div>
           </div>
-        </div>    
+        </div>
+        <div class="row">
+          <div class="col-xs-12 col-sm-3" id="day-chart" style="padding-bottom: 67px;">
+              <h5>Submission Day of Week
+                <a class="reset" href="javascript:dayChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              </h5>
+          </div>
+          <div class="col-xs-12 col-sm-6" id="hour-chart">
+            <h5>Submission Hour of Day
+              <a class="reset" href="javascript:hourChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+            </h5>
+          </div>
+          <div class="col-sm-3">
+            <div class="row">
+              <div class="col-xs-12" id="source-chart">
+                <h5>Submission Source
+                  <a class="reset" href="javascript:sourceChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+                </h5>
+              </div>
+            </div><!-- /row -->
+            <div class="row">
+              <div class="col-xs-12" id="status-chart">
+                <h5>Case Status
+                  <a class="reset" href="javascript:statusChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+                </h5>
+              </div>
+            </div>
+          </div>    
+        </div>
+        <div class="row">
+          <div id="map"></div>
+        </div>
       </div>
-      <div class="row">
-        <div id="map"></div>
+            
+      <div class="col-sm-5">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6" id="reason-chart">
+              <h5>Submission Reason
+                <a class="reset" href="javascript:reasonChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              </h5>
+          </div>
+          <div class="col-xs-12 col-sm-6" id="neighborhood-chart">
+              <h5>Submission by Neighborhood
+                <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              </h5>
+          </div>
+          <div class="col-xs-12 col-sm-6" id="opendays-chart">
+              <h5># of Days Case Open
+                <a class="reset" href="javascript:openDaysChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
+              </h5>
+          </div>
+        </div>
       </div>
     </div>
-          
-    <div class="col-sm-5">
-      <div class="row">
-        <div class="col-xs-12 col-sm-6" id="reason-chart">
-            <h5>Submission Reason
-              <a class="reset" href="javascript:reasonChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-            </h5>
+  </div>
+
+  <div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Filtered Records <span class="text-muted">(limited to first 100 records matching filter criteria)</span></h4>
         </div>
-        <div class="col-xs-12 col-sm-6" id="neighborhood-chart">
-            <h5>Submission by Neighborhood
-              <a class="reset" href="javascript:neighborhoodChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-            </h5>
+        <div class="modal-body">
+          <div class="container-fluid table-responsive">
+            <table class="table table-bordered table-hover table-striped table-condensed" id="data-table">
+              <thead>
+                  <th class="col-xs-2">Date Opened</th>
+                  <th class="col-xs-1">Case ID</th>
+                  <th class="col-xs-1">Status</th>
+                  <th class="col-xs-2">Type</th>
+                  <th class="col-xs-2">Location</th>
+                  <th class="col-xs-1">Source</th>
+                  <th class="col-xs-3">Closure Note</th>
+              </thead>
+            </table>
+          </div>
         </div>
-        <div class="col-xs-12 col-sm-6" id="opendays-chart">
-            <h5># of Days Case Open
-              <a class="reset" href="javascript:openDaysChart.filterAll();dc.redrawAll();" style="display: none;">reset</a>
-            </h5>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
@@ -97,7 +130,7 @@
 
   <footer>
     <div class="container-fluid">
-      <p class="pull-right">An <a href="http://labs.atsid.com" title="Applied Technical Systems, Inc. (ATS) website" target="_blank"><img src="img/ats.png" width="30" alt="Applied Technical Systems, Inc. (ATS)" style="vertical-align: baseline;"/></a> Labs project, licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0.html" target="_blank">Apache License, Version 2.0</a>. See <a href="https://github.com/atsid/mayors-hotline-explorer" target="_blank">the source code on GitHub</a> for details.</p>
+      <p class="pull-right">An <a href="http://labs.atsid.com" title="Applied Technical Systems, Inc. (ATS) website" target="_blank"><img src="img/ats.png" width="30" alt="Applied Technical Systems, Inc. (ATS)" style="vertical-align: baseline;"/></a> Labs project, licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0.html" title="Apache License, Version 2.0" target="_blank">APLv2</a>. See <a href="https://github.com/atsid/mayors-hotline-explorer" target="_blank">the source code on GitHub</a> for details.</p>
     </div>
   </footer>
 

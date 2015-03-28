@@ -8,6 +8,7 @@ var statusChart = dc.rowChart("#status-chart");
 var neighborhoodChart = dc.rowChart("#neighborhood-chart");
 var reasonChart = dc.rowChart("#reason-chart");
 var openDaysChart = dc.rowChart("#opendays-chart");
+var dataTable = dc.dataTable("#data-table")
 var dataCount = dc.dataCount('.data-count');
 
 var singleColor = ["#1a8bba"];
@@ -55,12 +56,14 @@ var tda_date = thirty_days_ago.toISOString().substring(0,10);
 
 
 var boston_data_url = "https://data.cityofboston.gov/resource/awu8-dc52.csv?" + 
+  "$$app_token=bjp8KrRvAPtuf809u1UXnI0Z8&" + /* Socrata API app token belongs here -- this is the dev token */
   "$limit=50000&" +
   /* Renaming the columns to single-char-names helps reduce the payload,
       as does selecting only the columns we use. */
   "$select=case_enquiry_id as id, " +
   "open_dt as d, " +
   "closed_dt as c, " +
+  "closure_reason as c_exp," +
   "source as s, " +
   "case_status as a, " +
   "neighborhood as n, " +
@@ -201,6 +204,24 @@ d3.csv(boston_data_url, function(err, data) {
     .gap(1)
     .labelOffsetY(12)
     .xAxis().ticks(2);
+
+  dataTable
+    .dimension(open_dates)
+    .group(function (d) { 
+      return tda_date + " &ndash; present";
+    })
+    .size(100) // (optional) max number of records to be shown, :default = 25
+    .columns([
+      function(d) { return d.d; },
+      function(d) { return d.id; },
+      function(d) { return d.a; },
+      function(d) { return d.t; },
+      function(d) { return d.l; },
+      function(d) { return d.s; },
+      function(d) { return d.c_exp; }
+    ])
+    .sortBy( function(d) { return d.d })
+    .order(d3.descending); 
 
   dc.renderAll();
   updateMap(locations.top(Infinity));
