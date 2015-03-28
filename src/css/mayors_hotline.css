@@ -21,7 +21,11 @@ footer {
 
 .dc-chart g.row text {
     fill: black;
-    font-size: 9px;
+    font-size: 10px;
+}
+
+.dc-chart rect.bar {
+  fill-opacity: 0.8;
 }
 
 .h4, h4, .h5, h5, .h6, h6 {

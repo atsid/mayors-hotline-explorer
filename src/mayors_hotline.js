@@ -67,6 +67,7 @@ d3.csv(boston_data_url, function(err, data) {
     d.date_opened = dateFormat.parse(d.d);
     var lat = d.g.split(',')[0].slice(1);
     var lon = d.g.split(',')[1].slice(0,-1);
+    d.n = (d.n !== "") ? d.n : "Not reported";
     d.g = { latitude: lat, longitude: lon };
     // d.date_target = d.target_dt ? dateFormat.parse(d.target_dt) : null;
     // d.date_closed = d.closed_dt ? dateFormat.parse(d.closed_dt) : null;
@@ -161,6 +162,7 @@ d3.csv(boston_data_url, function(err, data) {
     .elasticX(true)
     .gap(1)
     .ordering(function(i){return -i.value;})
+    .labelOffsetY(12)
     .xAxis().ticks(4);
 
   reasonChart
@@ -173,6 +175,7 @@ d3.csv(boston_data_url, function(err, data) {
     .elasticX(true)
     .gap(1)
     .ordering(function(i){return -i.value;})
+    .labelOffsetY(12)
     .xAxis().ticks(4);
 
   dc.renderAll();
