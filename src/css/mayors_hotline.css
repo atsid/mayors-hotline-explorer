@@ -75,6 +75,18 @@ footer {
     height: 518px;
 }
 
+.dc-table-label {
+  display: none;
+}
+
+#data-table {
+  font-size: 9pt;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) {
+  background-color: #f9faff;
+}
+
 .small-div-marker {
     width: 2px;
     height: 2px;
