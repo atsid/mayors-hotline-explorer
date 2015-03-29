@@ -1,6 +1,9 @@
 'use strict';
 
 var gulp = require('gulp');
+var gutil = require('gulp-util');
+var gulpif = require('gulp-if-else');
+var googleAnalytics = require('gulp-ga');
 var ghPages = require('gulp-gh-pages');
 var wiredep = require('wiredep').stream;
 var bower = require('gulp-bower');
@@ -14,6 +17,8 @@ var config = {
     build: 'dist'
   }
 };
+
+var production = false;
 
 // Images
 gulp.task('images:clean', function(next) {
@@ -54,11 +59,27 @@ gulp.task('html:clean', function(next) {
 gulp.task('html', ['html:clean', 'bower'], function() {
   return gulp.src(config.paths.app + '/**/*.html')
     .pipe(wiredep({ignorePath: '../'+config.paths.build+'/'}))
+    .pipe(gulpif(production, 
+      function() {
+        if( process.env.GA_TRACKING_ID ) {
+          return googleAnalytics({
+            url: 'labs.atsid.com/mayors-hotline-explorer',
+            uid: process.env.GA_TRACKING_ID,
+            tag: 'body'
+          });
+        } else {
+          gutil.log(gutil.colors.red('You need to set GA_TRACKING_ID environment variable!'));
+          gutil.beep();
+          return gutil.noop()
+        }
+      }
+    ))
     .pipe(gulp.dest(config.paths.build));
 });
 
 // Deploy
 gulp.task('deploy', ['build'], function() {
+  production = true;
   return gulp.src(config.paths.build + '/**/*')
     .pipe(ghPages());
 });
