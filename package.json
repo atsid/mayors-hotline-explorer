@@ -27,6 +27,7 @@
     "del": "~1.1.1",
     "gulp-ga": "0.0.3",
     "gulp-util": "~3.0.4",
-    "gulp-if-else": "~1.0.3"
+    "gulp-if-else": "~1.0.3",
+    "gulp-replace": "~0.5.3"
   }
 }

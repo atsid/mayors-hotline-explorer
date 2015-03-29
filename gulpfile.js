@@ -3,6 +3,7 @@
 var gulp = require('gulp');
 var gutil = require('gulp-util');
 var gulpif = require('gulp-if-else');
+var replace = require('gulp-replace');
 var googleAnalytics = require('gulp-ga');
 var ghPages = require('gulp-gh-pages');
 var wiredep = require('wiredep').stream;
@@ -42,6 +43,17 @@ gulp.task('js:clean', function(next) {
 });
 gulp.task('js', ['js:clean'], function() {
   return gulp.src(config.paths.app + '/js/**/*')
+    .pipe(gulpif(gutil.env.env === 'production',
+      function() {
+        if( process.env.SOCRATA_APP_TOKEN ) {
+          return replace('bjp8KrRvAPtuf809u1UXnI0Z8',process.env.SOCRATA_APP_TOKEN);
+        } else {
+          gutil.log(gutils.colors.red('You need to set the SOCRATA_APP_TOKEN environment variable!'));
+          gutil.beep();
+          return gutil.noop();
+        }
+      }
+    ))
     .pipe(gulp.dest(config.paths.build + '/js'));
 });
 
@@ -68,7 +80,7 @@ gulp.task('html', ['html:clean', 'bower'], function() {
         } else {
           gutil.log(gutil.colors.red('You need to set GA_TRACKING_ID environment variable!'));
           gutil.beep();
-          return gutil.noop()
+          return gutil.noop();
         }
       }
     ))

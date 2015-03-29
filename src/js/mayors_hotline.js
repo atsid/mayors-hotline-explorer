@@ -67,7 +67,7 @@ var tda_date = thirty_days_ago.toISOString().substring(0,10);
 
 
 var boston_data_url = "https://data.cityofboston.gov/resource/awu8-dc52.csv?" + 
-  "$$app_token=bjp8KrRvAPtuf809u1UXnI0Z8&" + /* Socrata API app token belongs here -- this is the dev token */
+  "$$app_token=bjp8KrRvAPtuf809u1UXnI0Z8&" + /* Socrata API app token */
   "$limit=50000&" +
   /* Renaming the columns to single-char-names helps reduce the payload,
       as does selecting only the columns we use. */

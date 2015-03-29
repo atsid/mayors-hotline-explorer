@@ -32,6 +32,6 @@ It should be sufficient to start from a clean checkout and issue:
 
 Serve the content locally out of the 'dist' directory.
 
-When it comes time to publish to GitHub Pages, set the environment variables `SOCRATA_API_KEY` and `GA_TRACKING_ID` to inject the correct info for the production instance and issue:
+When it comes time to publish to GitHub Pages, set the environment variables `SOCRATA_APP_TOKEN` and `GA_TRACKING_ID` to inject the correct info for the production instance and issue:
 
     gulp --env production deploy
