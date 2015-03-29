@@ -241,7 +241,8 @@ d3.csv(boston_data_url, function(err, data) {
 
 window.onresize = function(event) {
   allCharts.forEach(function(chart) {
-    chart.chart.width($(chart.id).innerWidth()-30)
+    chart.transitionDuration(0);
+    chart.chart.width($(chart.id).innerWidth()-30);
   });
   dc.renderAll();
 };
