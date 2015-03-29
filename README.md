@@ -22,3 +22,16 @@ This site, the Mayor's Hotline Explorer provides an interactive visualization of
 * [npm](https://www.npmjs.com/)
 * [bower](http://bower.io/)
 * [gulp](http://gulpjs.com/)
+
+### Development instructions
+
+It should be sufficient to start from a clean checkout and issue:
+
+    npm install
+    gulp build
+
+Serve the content locally out of the 'dist' directory.
+
+When it comes time to publish to GitHub Pages, set the environment variables `SOCRATA_API_KEY` and `GA_TRACKING_ID` to inject the correct info for the production instance and issue:
+
+    gulp --env production deploy

@@ -18,8 +18,6 @@ var config = {
   }
 };
 
-var production = false;
-
 // Images
 gulp.task('images:clean', function(next) {
   del(config.paths.build + '/img/**', next);
@@ -59,7 +57,7 @@ gulp.task('html:clean', function(next) {
 gulp.task('html', ['html:clean', 'bower'], function() {
   return gulp.src(config.paths.app + '/**/*.html')
     .pipe(wiredep({ignorePath: '../'+config.paths.build+'/'}))
-    .pipe(gulpif(production, 
+    .pipe(gulpif(gutil.env.env === 'production', 
       function() {
         if( process.env.GA_TRACKING_ID ) {
           return googleAnalytics({
@@ -79,7 +77,6 @@ gulp.task('html', ['html:clean', 'bower'], function() {
 
 // Deploy
 gulp.task('deploy', ['build'], function() {
-  production = true;
   return gulp.src(config.paths.build + '/**/*')
     .pipe(ghPages());
 });
