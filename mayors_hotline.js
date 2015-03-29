@@ -11,6 +11,17 @@ var openDaysChart = dc.rowChart("#opendays-chart");
 var dataTable = dc.dataTable("#data-table")
 var dataCount = dc.dataCount('.data-count');
 
+var allCharts = [
+  {chart: dateChart, id: "#date-chart"},
+  {chart: hourChart, id: "#hour-chart"},
+  {chart: dayChart,  id: "#day-chart"},
+  {chart: sourceChart, id: "#source-chart"},
+  {chart: statusChart, id: "#status-chart"},
+  {chart: neighborhoodChart, id: "#neighborhood-chart"},
+  {chart: reasonChart, id: "#reason-chart"},
+  {chart: openDaysChart, id: "#opendays-chart"}
+];
+
 var singleColor = ["#1a8bba"];
 
 
@@ -227,3 +238,10 @@ d3.csv(boston_data_url, function(err, data) {
   updateMap(locations.top(Infinity));
 
 });
+
+window.onresize = function(event) {
+  allCharts.forEach(function(chart) {
+    chart.chart.width($(chart.id).innerWidth()-30)
+  });
+  dc.renderAll();
+};
