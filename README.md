@@ -28,7 +28,7 @@ This site, the Mayor's Hotline Explorer provides an interactive visualization of
 It should be sufficient to start from a clean checkout and issue:
 
     npm install
-    gulp build
+    gulp
 
 Serve the content locally out of the 'dist' directory.
 
