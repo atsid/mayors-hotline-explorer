@@ -189,7 +189,7 @@ d3.csv(boston_data_url, function(err, data) {
     .gap(1)
     .ordering(function(i){return -i.value;})
     .labelOffsetY(12)
-    .xAxis().ticks(2);
+    .xAxis().ticks(3);
 
   reasonChart
     .width($('#reason-chart').innerWidth()-30)
@@ -202,7 +202,7 @@ d3.csv(boston_data_url, function(err, data) {
     .gap(1)
     .ordering(function(i){return -i.value;})
     .labelOffsetY(12)
-    .xAxis().ticks(2);
+    .xAxis().ticks(3);
 
   openDaysChart
     .width($('#opendays-chart').innerWidth()-30)
@@ -214,7 +214,7 @@ d3.csv(boston_data_url, function(err, data) {
     .elasticX(true)
     .gap(1)
     .labelOffsetY(12)
-    .xAxis().ticks(2);
+    .xAxis().ticks(3);
 
   dataTable
     .dimension(open_dates)
